@@ -1,0 +1,14 @@
+name: WastedCraft
+version: '${project.version}'
+main: com.sheepion.wastedcraft.WastedCraft
+api-version: 1.18
+prefix: WastedCraft
+authors: [ Sheepion ]
+description: brings new feature to survival
+commands:
+  wastedcraft:
+    description: WastedCraft
+permissions:
+  wastedcraft.reload:
+    description: reload configuration
+    default: op

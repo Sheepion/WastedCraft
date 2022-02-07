@@ -1,0 +1,46 @@
+#thirstiness decrease options
+decrease:
+  #thirstiness decrease %base% per %interval% ticks when doing nothing.
+  base: 0.0045
+  interval: 30
+  #damage given to player per %delay% ticks when thirstiness drop to 0.
+  drop-to-zero-damage: 1.5
+  #thirstiness decrease when destroying blocks.
+  loss-per-block-break: 0.006
+  #thirstiness decrease when placing blocks.
+  loss-per-block-place: 0.004
+  #decrease more thirstiness while running. Added to %base%, detected per %interval% ticks.
+  run-cost: 0.006
+  #lowest thirstiness level to regain health.
+  regain-health-threshold: 10.0
+  #decrease thirstiness when regain health because of hunger being satisfied. Can be set to 0.
+  regain-health-cost: 0.3
+  #decrease more thirstiness when in nether. Added to %base%, detected per %interval% ticks.
+  nether-cost: 0.0045
+
+#the food source of gaining thirstiness, not case-sensitive
+source:
+  potion: 8.5
+  mushroom_stew: 12
+  rabbit_stew: 12
+  milk_bucket: 10
+  apple: 4.5
+  golden_apple: 4
+  carrot: 4.5
+  golden_carrot: 4
+  melon_slice: 6
+  beetroot: 4.5
+  beetroot_soup: 12
+  bread: -0.6
+  cookie: -0.4
+  cooked_porkchop: -0.35
+  cooked_beef: -0.35
+  cooked_chicken: -0.35
+  cooked_rabbit: -0.35
+  cooked_mutton: -0.35
+  cooked_cod: -0.35
+  cooked_salmon: -0.35
+  baked_potato: -0.3
+  rotten_flesh: -3.5
+  poisonous_potato: -10
+  sweet_berries: 2.5

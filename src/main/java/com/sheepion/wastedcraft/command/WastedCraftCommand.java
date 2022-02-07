@@ -1,0 +1,21 @@
+package com.sheepion.wastedcraft.command;
+
+import com.sheepion.wastedcraft.WastedCraft;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+
+public class WastedCraftCommand implements CommandExecutor {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length>0) {
+            if (args[0].equalsIgnoreCase("reload")) {
+                if (sender.hasPermission("wastedcraft.reload")) {
+                    WastedCraft.reload();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}

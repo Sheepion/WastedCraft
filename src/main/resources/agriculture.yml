@@ -1,0 +1,8 @@
+#which item can be used in composter
+# chance: 0 = never success, 1 = always success
+composter-accept:
+  rotten_flesh: 0.3
+  bamboo: 0.1
+  poisonous_potato: 0.5
+  chorus_fruit: 0.6
+  dead_bush: 0.3
