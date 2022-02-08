@@ -1,0 +1,5 @@
+elytra-max-speed: 1.8
+vehicle-max-speed:
+  #currently bugged
+  boat: 3.6
+  minecart: 0.4

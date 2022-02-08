@@ -1,0 +1,10 @@
+#drop the item when break
+drop: true
+#chance to break the block when change redstone current
+destroy-chance:
+  redstone_wire: 0.0001
+  repeater: 0.0005
+  redstone_torch: 0.0005
+  redstone_wall_torch: 0.0005
+  lever: 0.0005
+  comparator: 0.0005

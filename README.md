@@ -29,5 +29,6 @@ Thirstiness drop to 0 will cause damage.
 ## Vanilla changes
 - Player lose 0%~10% levels when died in natural world.
 - Player lose 10%~50% levels when died in nether or the end world.
+- Redstone current may be broken when a redstone current changes.
 ## Miscellaneous
 - Tamed animals will be immortal.

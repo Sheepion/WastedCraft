@@ -1,10 +1,7 @@
 package com.sheepion.wastedcraft;
 
 import com.sheepion.wastedcraft.command.WastedCraftCommand;
-import com.sheepion.wastedcraft.listener.AgricultureManager;
-import com.sheepion.wastedcraft.listener.DeathPenalty;
-import com.sheepion.wastedcraft.listener.PetProtector;
-import com.sheepion.wastedcraft.listener.ThirstinessListener;
+import com.sheepion.wastedcraft.listener.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,6 +26,8 @@ public final class WastedCraft extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PetProtector(),this);
         getServer().getPluginManager().registerEvents(new DeathPenalty(),this);
         getServer().getPluginManager().registerEvents(new AgricultureManager(),this);
+        getServer().getPluginManager().registerEvents(new SpeedLimit(),this);
+        getServer().getPluginManager().registerEvents(new RedstoneListener(),this);
         //register commands
         getCommand("wastedcraft").setExecutor(new WastedCraftCommand());
     }
@@ -39,6 +38,8 @@ public final class WastedCraft extends JavaPlugin {
     }
 
     public static void reload() {
+        SpeedLimit.reload();
+        RedstoneListener.reload();
         //pre-reload
         ThirstinessListener.preReload();
         AgricultureManager.preReload();
