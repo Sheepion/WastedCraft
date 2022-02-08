@@ -45,11 +45,8 @@ public class SpeedLimit implements Listener {
             Vehicle vehicle=event.getVehicle();
             if(vehicle instanceof Minecart){
                 ((Minecart)vehicle).setMaxSpeed(vehicleMaxSpeed.get("MINECART"));
-                player.sendMessage("max speed: "+vehicleMaxSpeed.get("MINECART"));
-            }else if(vehicle instanceof Boat){
-                ((Boat)vehicle).setMaxSpeed(vehicleMaxSpeed.get("BOAT"));
-                player.sendMessage("max speed: "+vehicleMaxSpeed.get("BOAT"));
             }
+            //set boat's max speed doesn't work, never try again.
         }
     }
 
