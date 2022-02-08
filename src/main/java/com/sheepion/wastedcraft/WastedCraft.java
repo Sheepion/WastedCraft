@@ -1,6 +1,8 @@
 package com.sheepion.wastedcraft;
 
 import com.sheepion.wastedcraft.command.WastedCraftCommand;
+import com.sheepion.wastedcraft.item.ItemManager;
+import com.sheepion.wastedcraft.item.TeleportPotion;
 import com.sheepion.wastedcraft.listener.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +32,9 @@ public final class WastedCraft extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RedstoneListener(),this);
         //register commands
         getCommand("wastedcraft").setExecutor(new WastedCraftCommand());
+        //register item events
+        getServer().getPluginManager().registerEvents(new TeleportPotion(),this);
+        ItemManager.registerRecipes();
     }
 
     @Override
