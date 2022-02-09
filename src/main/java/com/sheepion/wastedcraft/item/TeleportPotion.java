@@ -90,6 +90,7 @@ public class TeleportPotion implements Listener {
         float yaw = pdc.get(TP_YAW, PersistentDataType.FLOAT);
         float pitch = pdc.get(TP_PITCH, PersistentDataType.FLOAT);
         Location location = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+        location.getChunk().load();
         Player player = event.getPlayer();
         player.spawnParticle(Particle.PORTAL, player.getLocation(), (int) ((Math.random() * 200)), 0.5, 0.5, 0.5);
         //teleport vehicle first.

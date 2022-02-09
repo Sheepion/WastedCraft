@@ -1,5 +1,6 @@
 package com.sheepion.wastedcraft;
 
+import com.sheepion.wastedcraft.command.PetCommand;
 import com.sheepion.wastedcraft.command.WastedCraftCommand;
 import com.sheepion.wastedcraft.item.ItemManager;
 import com.sheepion.wastedcraft.item.TeleportPotion;
@@ -33,6 +34,7 @@ public final class WastedCraft extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(),this);
         //register commands
         getCommand("wastedcraft").setExecutor(new WastedCraftCommand());
+        getCommand("pet").setExecutor(new PetCommand());
         //register item events
         getServer().getPluginManager().registerEvents(new TeleportPotion(),this);
         ItemManager.registerRecipes();

@@ -8,7 +8,12 @@ description: brings new feature to survival
 commands:
   wastedcraft:
     description: WastedCraft
+  pet:
+    description: commands about pets
 permissions:
   wastedcraft.reload:
     description: reload configuration
     default: op
+  wastedcraft.pet.listall:
+    description: find all pets
+    default: true
