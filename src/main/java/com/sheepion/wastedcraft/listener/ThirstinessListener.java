@@ -1,6 +1,7 @@
 package com.sheepion.wastedcraft.listener;
 
 import com.sheepion.wastedcraft.WastedCraft;
+import com.sheepion.wastedcraft.api.SendStateTask;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -182,7 +183,6 @@ public class ThirstinessListener implements Listener {
         BukkitTask task = WastedCraft.plugin.getServer().getScheduler().runTaskTimer(WastedCraft.plugin
                 , new ThirstyTimelyDecreaseTask(player), taskInterval, taskInterval);
         updateThirstinessTasks.put(player.getUniqueId(), task);
-        sendThirstiness(player);
     }
 
     /**
@@ -195,6 +195,7 @@ public class ThirstinessListener implements Listener {
         if (task != null) {
             task.cancel();
         }
+        updateThirstinessTasks.remove(player.getUniqueId());
     }
 
     //set thirstiness to 20 when player respawn
@@ -213,7 +214,7 @@ public class ThirstinessListener implements Listener {
         }
         Player player = event.getPlayer();
         increaseThirstiness(player, thirstinessTable.get(item.getType().toString()));
-        sendThirstiness(player);
+        SendStateTask.sendState(player);
     }
 
 
@@ -242,7 +243,7 @@ public class ThirstinessListener implements Listener {
         if (decreaseThirstiness(player, amount) == 0) {
             player.damage(damage);
             lastDamageCausedByThirsty.add(player.getUniqueId());
-            sendThirstiness(player);
+
         }
     }
 
@@ -288,6 +289,5 @@ class ThirstyTimelyDecreaseTask implements Runnable {
             amount += getNetherCost();
         }
         decreaseAndDamage(player, amount, getDropToZeroDamage());
-        ThirstinessListener.sendThirstiness(player);
     }
 }

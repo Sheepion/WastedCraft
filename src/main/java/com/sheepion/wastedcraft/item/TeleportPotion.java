@@ -2,6 +2,7 @@ package com.sheepion.wastedcraft.item;
 
 import com.sheepion.wastedcraft.WastedCraft;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -91,7 +92,15 @@ public class TeleportPotion implements Listener {
         Location location = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
         Player player = event.getPlayer();
         player.spawnParticle(Particle.PORTAL, player.getLocation(), (int) ((Math.random() * 200)), 0.5, 0.5, 0.5);
-        player.teleport(location, PlayerTeleportEvent.TeleportCause.COMMAND);
+        //teleport vehicle first.
+        Entity vehicle = player.getVehicle();
+        if (vehicle != null) {
+            vehicle.eject();
+            vehicle.teleport(location);
+            //simply add player as vehicle's passenger will cause bug, player don't actually get into vehicle.
+        }
+        //teleport player.
+        player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
         player.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
         player.spawnParticle(Particle.PORTAL, location, (int) ((Math.random() * 200)), 0.5, 0.5, 0.5);
     }
