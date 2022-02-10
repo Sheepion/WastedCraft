@@ -48,9 +48,9 @@ public final class WastedCraft extends JavaPlugin {
     public static void reload() {
         SpeedLimit.reload();
         RedstoneListener.reload();
+        AgricultureManager.reload();
         //pre-reload
         ThirstinessListener.preReload();
-        AgricultureManager.preReload();
         //thirsty config
         File thirstyConfigFile = new File(plugin.getDataFolder(), "/thirsty.yml");
         if (!thirstyConfigFile.exists()) {
@@ -79,21 +79,7 @@ public final class WastedCraft extends JavaPlugin {
             plugin.getLogger().info("\t-Loaded " + key + ": " + thirstyConfig.getDouble("source." + key));
         }
 
-        //agriculture config
-        File agricultureConfigFile = new File(plugin.getDataFolder(), "/agriculture.yml");
-        if (!agricultureConfigFile.exists()) {
-            plugin.saveResource("agriculture.yml", false);
-        }
-        //reload agriculture config
-        FileConfiguration agricultureConfig= YamlConfiguration.loadConfiguration(agricultureConfigFile);
-        plugin.getLogger().info("loading agriculture config...");
-        //reload composter table
-        ConfigurationSection composterSection = agricultureConfig.getConfigurationSection("composter-accept");
-        plugin.getLogger().info("loading composter table...");
-        for(String key : composterSection.getKeys(false)){
-            AgricultureManager.addCompost(key.toUpperCase(),composterSection.getDouble(key));
-            plugin.getLogger().info("\t-Loaded " + key + ": " + composterSection.getDouble(key));
-        }
+
     }
 
 }

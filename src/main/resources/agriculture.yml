@@ -6,3 +6,22 @@ composter-accept:
   poisonous_potato: 0.5
   chorus_fruit: 0.6
   dead_bush: 0.3
+#give exp when harvest crops. only harvest mature crops can give exp.
+# chance: 0 = never success, 1 = always success
+# amount should be equal or greater than 0.
+#caution: you should use the block's namespace id like "potatoes", not item's id like "potato"
+#please look up wiki for block's namespace id
+#block should be "ageable", which means try to add exp bonus on watermelon may fail.
+exp-bonus:
+  potatoes:
+    chance: 0.8
+    amount: 1
+  wheat:
+    chance: 0.8
+    amount: 1
+  carrots:
+    chance: 0.8
+    amount: 1
+  nether_wart:
+    chance: 0.6
+    amount: 1

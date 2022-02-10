@@ -8,6 +8,7 @@ It also modified some vanilla behavior, such as the death penalty, agricultural 
 WastedCraft will influence some "features" like mob farm.
 ## Commands
 - "/wastedcraft reload"    Reloads the config file.
+- "/pet listall"            Lists all pets.
 ## Permissions
 - wastedcraft.reload    Reloads the config file.
 ## Thirstiness
@@ -26,6 +27,7 @@ Thirstiness drop to 0 will cause damage.
 
 ## Agriculture
 - Composter customization.  (Configurable)  
+- Give exp when harvest crops.  (Configurable)  
 ## Vanilla changes
 - Player lose 0%~10% levels when died in natural world.
 - Player lose 10%~50% levels when died in nether or the end world.
