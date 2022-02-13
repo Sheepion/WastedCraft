@@ -16,7 +16,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.HashMap;
@@ -74,25 +77,7 @@ public class AgricultureManager implements Listener {
         //player right click composter
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null && event.getClickedBlock().getType() == org.bukkit.Material.COMPOSTER) {
             Block block = event.getClickedBlock();
-            BlockState state = block.getState();
-            BlockData blockData = block.getBlockData();
-            Levelled levelled = (Levelled) blockData;
-            String handItem = player.getInventory().getItemInMainHand().getType().toString();
-            if (levelled.getLevel() < levelled.getMaximumLevel()) {
-                if (composterTable.containsKey(handItem)) {
-                    player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-                    player.getWorld().spawnParticle(Particle.COMPOSTER, block.getLocation().add(0.5, 1, 0.5), 8, 0.2, 0, 0.2);
-                    if (Math.random() < composterTable.get(handItem)) {
-                        levelled.setLevel(levelled.getLevel() + 1);
-                        state.setBlockData(blockData);
-                        state.update();
-                        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPOSTER_FILL_SUCCESS, 1.3f, 1f);
-                    } else {
-                        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_COMPOSTER_FILL, 1.3f, 0.8f);
-                        event.setCancelled(true);
-                    }
-                }
-            }
+            composterAccept(block, player.getInventory().getItemInMainHand());
         }
     }
 
@@ -110,6 +95,40 @@ public class AgricultureManager implements Listener {
                     if (Math.random() < bonus.chance()) {
                         event.setExpToDrop(bonus.amount());
                     }
+                }
+            }
+        }
+    }
+
+    //add hopper support to composter accept
+    @EventHandler(ignoreCancelled = false)
+    public void onInventoryMoveItem(InventoryMoveItemEvent event) {
+        //check if source is hopper
+        if (event.getSource().getType() == InventoryType.HOPPER) {
+            //check if destination is composter
+            if (event.getDestination().getType() == InventoryType.COMPOSTER) {
+                composterAccept(event.getSource().getLocation().subtract(0, 1, 0).getBlock(), event.getItem());
+            }
+        }
+    }
+
+    public static void composterAccept(Block composter, ItemStack item) {
+        if (composter.getType() != org.bukkit.Material.COMPOSTER) return;
+        BlockState state = composter.getState();
+        BlockData blockData = composter.getBlockData();
+        Levelled levelled = (Levelled) blockData;
+        if (levelled.getLevel() < levelled.getMaximumLevel()) {
+            String itemType = item.getType().toString();
+            if (composterTable.containsKey(itemType)) {
+                item.setAmount(item.getAmount() - 1);
+                composter.getWorld().spawnParticle(Particle.COMPOSTER, composter.getLocation().add(0.5, 1, 0.5), 8, 0.2, 0, 0.2);
+                if (Math.random() < composterTable.get(itemType)) {
+                    levelled.setLevel(levelled.getLevel() + 1);
+                    state.setBlockData(blockData);
+                    state.update();
+                    composter.getWorld().playSound(composter.getLocation(), Sound.BLOCK_COMPOSTER_FILL_SUCCESS, 1.3f, 1f);
+                } else {
+                    composter.getWorld().playSound(composter.getLocation(), Sound.BLOCK_COMPOSTER_FILL, 1.3f, 0.8f);
                 }
             }
         }

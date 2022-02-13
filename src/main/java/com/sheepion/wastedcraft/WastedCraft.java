@@ -32,6 +32,8 @@ public final class WastedCraft extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SpeedLimit(),this);
         getServer().getPluginManager().registerEvents(new RedstoneListener(),this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(),this);
+        getServer().getPluginManager().registerEvents(new MobFarmListener(),this);
+        getServer().getPluginManager().registerEvents(new NoMoreBedBomb(),this);
         //register commands
         getCommand("wastedcraft").setExecutor(new WastedCraftCommand());
         getCommand("pet").setExecutor(new PetCommand());
