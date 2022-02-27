@@ -18,7 +18,8 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 
 public class TeleportPotion implements Listener {
-    private static final ItemStack newPotion;
+    //new blank teleport potion
+    private static final ItemStack newTeleportPotion;
     private static final NamespacedKey TP_WORLD = new NamespacedKey(WastedCraft.plugin, "tp_world");
     private static final NamespacedKey TP_X = new NamespacedKey(WastedCraft.plugin, "tp_x");
     private static final NamespacedKey TP_Y = new NamespacedKey(WastedCraft.plugin, "tp_y");
@@ -27,12 +28,12 @@ public class TeleportPotion implements Listener {
     private static final NamespacedKey TP_PITCH = new NamespacedKey(WastedCraft.plugin, "tp_pitch");
 
     public static ItemStack getPotion() {
-        return newPotion;
+        return newTeleportPotion;
     }
 
     static {
-        newPotion = new ItemStack(Material.POTION, 1);
-        ItemMeta itemMeta = newPotion.getItemMeta();
+        newTeleportPotion = new ItemStack(Material.POTION, 1);
+        ItemMeta itemMeta = newTeleportPotion.getItemMeta();
         assert itemMeta != null;
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§f潜行时右键来设置传送目的地");
@@ -40,8 +41,7 @@ public class TeleportPotion implements Listener {
         itemMeta.setDisplayName("§b传送药水");
         PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
         pdc.set(TP_WORLD, PersistentDataType.STRING, "NULL__");
-        newPotion.setItemMeta(itemMeta);
-
+        newTeleportPotion.setItemMeta(itemMeta);
     }
 
     //add location to pdc when right click
@@ -100,9 +100,12 @@ public class TeleportPotion implements Listener {
             vehicle.teleport(location);
             //simply add player as vehicle's passenger will cause bug, player don't actually get into vehicle.
         }
+        Chunk originChunk = player.getLocation().getChunk();
         //teleport player.
         player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
         player.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
         player.spawnParticle(Particle.PORTAL, location, (int) ((Math.random() * 200)), 0.5, 0.5, 0.5);
+        //keep the origin chunk loaded to teleport pets.
+        WastedCraft.plugin.getServer().getScheduler().runTaskLater(WastedCraft.plugin, () -> originChunk.load(), 20);
     }
 }

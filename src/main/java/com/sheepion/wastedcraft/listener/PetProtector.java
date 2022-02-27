@@ -19,10 +19,6 @@ public class PetProtector implements org.bukkit.event.Listener {
         if (event.getEntity().getType().equals(org.bukkit.entity.EntityType.CAT)) {
             event.setCancelled(true);
         }
-        //protect tamed wolf
-        if (event.getEntity().getType().equals(org.bukkit.entity.EntityType.WOLF) && ((Tameable) event.getEntity()).isTamed()) {
-            event.setCancelled(true);
-        }
         //protect tamed animal
         if (event.getEntity() instanceof Tameable) {
             if (((Tameable) event.getEntity()).isTamed()) {
