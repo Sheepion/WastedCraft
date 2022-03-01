@@ -113,7 +113,9 @@ public class AgricultureManager implements Listener {
     }
 
     public static void composterAccept(Block composter, ItemStack item) {
-        if (composter.getType() != org.bukkit.Material.COMPOSTER) return;
+        if (composter.getType() != org.bukkit.Material.COMPOSTER) {
+            return;
+        }
         BlockState state = composter.getState();
         BlockData blockData = composter.getBlockData();
         Levelled levelled = (Levelled) blockData;

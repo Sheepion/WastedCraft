@@ -1,0 +1,13 @@
+enchantments:
+  range_mining:
+    display-name: "§7范围采掘"
+    conflicts:
+      - efficiency
+    success-rate:
+      netherite_pickaxe: 0.35
+      diamond_pickaxe: 0.2
+      gold_pickaxe: 0.5
+      iron_pickaxe: 0.2
+      stone_pickaxe: 0.2
+      wood_pickaxe: 0.2
+

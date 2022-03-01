@@ -2,12 +2,14 @@ package com.sheepion.wastedcraft;
 
 import com.sheepion.wastedcraft.command.PetCommand;
 import com.sheepion.wastedcraft.command.WastedCraftCommand;
+import com.sheepion.wastedcraft.enchant.EnchantmentManager;
 import com.sheepion.wastedcraft.item.ItemManager;
 import com.sheepion.wastedcraft.item.TeleportPotion;
 import com.sheepion.wastedcraft.listener.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -34,11 +36,14 @@ public final class WastedCraft extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(),this);
         getServer().getPluginManager().registerEvents(new MobFarmListener(),this);
         getServer().getPluginManager().registerEvents(new NoMoreBedBomb(),this);
+        getServer().getPluginManager().registerEvents(new EnchantmentManager(),this);
         //register commands
         getCommand("wastedcraft").setExecutor(new WastedCraftCommand());
         getCommand("pet").setExecutor(new PetCommand());
         //register item events
         getServer().getPluginManager().registerEvents(new TeleportPotion(),this);
+        //register enchantments
+        EnchantmentManager.registerEnchantments();
         ItemManager.registerRecipes();
     }
 
@@ -51,6 +56,7 @@ public final class WastedCraft extends JavaPlugin {
         SpeedLimit.reload();
         RedstoneListener.reload();
         AgricultureManager.reload();
+        EnchantmentManager.reload();
         //pre-reload
         ThirstinessListener.preReload();
         //thirsty config
