@@ -25,10 +25,11 @@ import java.util.ArrayList;
  * @date 2/27/2022
  */
 public class EnchantmentManager implements Listener {
-    private static ArrayList<Enchantment> registeredEnchantments = new ArrayList<>();
+    private static ArrayList<CustomEnchantment> registeredEnchantments = new ArrayList<>();
     private static RangeMining rangeMining = new RangeMining(new NamespacedKey(WastedCraft.plugin, "enchant.range_mining"));
     private static LightningArrow lightningArrow = new LightningArrow(new NamespacedKey(WastedCraft.plugin, "enchant.lightning_arrow"));
-
+    private static ExplosiveArrow explosiveArrow = new ExplosiveArrow(new NamespacedKey(WastedCraft.plugin, "enchant.explosive_arrow"));
+    private static TrackingArrow trackingArrow= new TrackingArrow(new NamespacedKey(WastedCraft.plugin, "enchant.tracking_arrow"));
     /**
      * Register all enchantments
      */
@@ -37,9 +38,15 @@ public class EnchantmentManager implements Listener {
         registeredEnchantments.add(rangeMining);
         registerEnchantment(lightningArrow);
         registeredEnchantments.add(lightningArrow);
+        registerEnchantment(explosiveArrow);
+        registeredEnchantments.add(explosiveArrow);
+        registerEnchantment(trackingArrow);
+        registeredEnchantments.add(trackingArrow);
+        registeredEnchantments.sort((CustomEnchantment o1, CustomEnchantment o2) -> o2.getPriority() - o1.getPriority());
         //register listener
-        WastedCraft.plugin.getServer().getPluginManager().registerEvents(rangeMining, WastedCraft.plugin);
-        WastedCraft.plugin.getServer().getPluginManager().registerEvents(lightningArrow, WastedCraft.plugin);
+        for (CustomEnchantment registeredEnchantment : registeredEnchantments) {
+            WastedCraft.plugin.getServer().getPluginManager().registerEvents((Listener) registeredEnchantment, WastedCraft.plugin);
+        }
     }
 
 
@@ -50,11 +57,13 @@ public class EnchantmentManager implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onEnchantItem(EnchantItemEvent event) {
+        //only accept 30 levels enchantment
         if (event.getExpLevelCost() != 30) {
             return;
         }
         for (Enchantment registeredEnchantment : registeredEnchantments) {
             if (registeredEnchantment.canEnchantItem(event.getItem())) {
+                //check conflict
                 boolean conflict= false;
                 for (Enchantment enchantment : event.getEnchantsToAdd().keySet()) {
                     if (registeredEnchantment.conflictsWith(enchantment)) {
@@ -65,7 +74,7 @@ public class EnchantmentManager implements Listener {
                 if (conflict) {
                     continue;
                 }
-                //event.getEnchantsToAdd().put(rangeMining, 1);
+                //add enchantment and lore
                 event.getItem().addUnsafeEnchantment(registeredEnchantment, 1);
                 var lore = event.getItem().lore();
                 if (lore == null) {
@@ -112,6 +121,8 @@ public class EnchantmentManager implements Listener {
         FileConfiguration enchantmentConfig = YamlConfiguration.loadConfiguration(enchantmentConfigFile);
         rangeMining.reload(enchantmentConfig.getConfigurationSection("enchantments.range_mining"));
         lightningArrow.reload(enchantmentConfig.getConfigurationSection("enchantments.lightning_arrow"));
+        explosiveArrow.reload(enchantmentConfig.getConfigurationSection("enchantments.explosive_arrow"));
+        trackingArrow.reload(enchantmentConfig.getConfigurationSection("enchantments.tracking_arrow"));
     }
 
 

@@ -26,25 +26,32 @@ import java.util.Set;
  * @date 3/2/2022
  */
 public abstract class CustomEnchantment extends Enchantment {
-    public CustomEnchantment(@NotNull NamespacedKey key) {
-        super(key);
-    }
+    private int priority;
     private String displayName;
     //conflict enchantments
     private final HashSet<String> conflictEnchantments = new HashSet<>();
     //enchant success rate
     private final HashMap<String, Double> enchantSuccessRate = new HashMap<>();
-
+    public CustomEnchantment(@NotNull NamespacedKey key) {
+        super(key);
+    }
+    public int getPriority() {
+        return priority;
+    }
     public String getDisplayName() {
         return displayName;
     }
 
+    public boolean isEnchanted(ItemStack item) {
+        return item.containsEnchantment(Enchantment.getByKey(getKey()));
+    }
     /**
      * reload config
      *
      * @param config the lightning arrow config section
      */
     public void reload(ConfigurationSection config) {
+        priority = config.getInt("priority");
         displayName = config.getString("display-name");
         //reload conflict enchantments
         conflictEnchantments.clear();

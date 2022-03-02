@@ -1,5 +1,6 @@
 enchantments:
   range_mining:
+    priority: 10
     display-name: "§7范围采掘"
     conflicts:
       - efficiency
@@ -11,8 +12,23 @@ enchantments:
       stone_pickaxe: 0.2
       wood_pickaxe: 0.2
   lightning_arrow:
+    priority: 11
     display-name: "§7引雷"
     conflicts:
       - infinity
     success-rate:
-      bow: 1
+      bow: 0.05
+  explosive_arrow:
+    priority: 10
+    display-name: "§7爆破"
+    conflicts:
+      - infinity
+    success-rate:
+      bow: 0.05
+  tracking_arrow:
+    priority: 9
+    display-name: "§7追踪"
+    conflicts:
+      - infinity
+    success-rate:
+      bow: 0.05
