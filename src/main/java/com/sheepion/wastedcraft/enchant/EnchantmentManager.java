@@ -25,15 +25,21 @@ import java.util.ArrayList;
  * @date 2/27/2022
  */
 public class EnchantmentManager implements Listener {
+    private static ArrayList<Enchantment> registeredEnchantments = new ArrayList<>();
     private static RangeMining rangeMining = new RangeMining(new NamespacedKey(WastedCraft.plugin, "enchant.range_mining"));
+    private static LightningArrow lightningArrow = new LightningArrow(new NamespacedKey(WastedCraft.plugin, "enchant.lightning_arrow"));
 
     /**
      * Register all enchantments
      */
     public static void registerEnchantments() {
         registerEnchantment(rangeMining);
+        registeredEnchantments.add(rangeMining);
+        registerEnchantment(lightningArrow);
+        registeredEnchantments.add(lightningArrow);
         //register listener
         WastedCraft.plugin.getServer().getPluginManager().registerEvents(rangeMining, WastedCraft.plugin);
+        WastedCraft.plugin.getServer().getPluginManager().registerEvents(lightningArrow, WastedCraft.plugin);
     }
 
 
@@ -47,20 +53,27 @@ public class EnchantmentManager implements Listener {
         if (event.getExpLevelCost() != 30) {
             return;
         }
-        if (rangeMining.canEnchantItem(event.getItem())) {
-            for (Enchantment enchantment : event.getEnchantsToAdd().keySet()) {
-                if (rangeMining.conflictsWith(enchantment)) {
-                    return;
+        for (Enchantment registeredEnchantment : registeredEnchantments) {
+            if (registeredEnchantment.canEnchantItem(event.getItem())) {
+                boolean conflict= false;
+                for (Enchantment enchantment : event.getEnchantsToAdd().keySet()) {
+                    if (registeredEnchantment.conflictsWith(enchantment)) {
+                        conflict = true;
+                        break;
+                    }
                 }
+                if (conflict) {
+                    continue;
+                }
+                //event.getEnchantsToAdd().put(rangeMining, 1);
+                event.getItem().addUnsafeEnchantment(registeredEnchantment, 1);
+                var lore = event.getItem().lore();
+                if (lore == null) {
+                    lore = new ArrayList<>();
+                }
+                lore.add(registeredEnchantment.displayName(-1));
+                event.getItem().lore(lore);
             }
-            //event.getEnchantsToAdd().put(rangeMining, 1);
-            event.getItem().addUnsafeEnchantment(rangeMining, 1);
-            var lore = event.getItem().lore();
-            if (lore == null) {
-                lore = new ArrayList<>();
-            }
-            lore.add(Component.text(rangeMining.getDisplayName()));
-            event.getItem().lore(lore);
         }
     }
 
@@ -70,14 +83,19 @@ public class EnchantmentManager implements Listener {
             return;
         }
         //add custom enchantments to result
-        if (event.getInventory().getItem(0).containsEnchantment(rangeMining)) {
-            event.getResult().addUnsafeEnchantment(rangeMining, 1);
+        for (Enchantment registeredEnchantment : registeredEnchantments) {
+            if (event.getInventory().getItem(0).containsEnchantment(registeredEnchantment)) {
+                event.getResult().addUnsafeEnchantment(registeredEnchantment, 1);
+            }
         }
         //check conflicts
-        if (event.getResult().containsEnchantment(Enchantment.getByKey(rangeMining.getKey()))) {
-            for (Enchantment enchantment : event.getResult().getEnchantments().keySet()) {
-                if (rangeMining.conflictsWith(enchantment)) {
-                    event.setResult(null);
+        for (Enchantment registeredEnchantment : registeredEnchantments) {
+            if (event.getResult().containsEnchantment(Enchantment.getByKey(registeredEnchantment.getKey()))) {
+                for (Enchantment enchantment : event.getResult().getEnchantments().keySet()) {
+                    if (registeredEnchantment.conflictsWith(enchantment)) {
+                        event.setResult(null);
+                        return;
+                    }
                 }
             }
         }
@@ -93,6 +111,7 @@ public class EnchantmentManager implements Listener {
         }
         FileConfiguration enchantmentConfig = YamlConfiguration.loadConfiguration(enchantmentConfigFile);
         rangeMining.reload(enchantmentConfig.getConfigurationSection("enchantments.range_mining"));
+        lightningArrow.reload(enchantmentConfig.getConfigurationSection("enchantments.lightning_arrow"));
     }
 
 

@@ -10,4 +10,9 @@ enchantments:
       iron_pickaxe: 0.2
       stone_pickaxe: 0.2
       wood_pickaxe: 0.2
-
+  lightning_arrow:
+    display-name: "§7引雷"
+    conflicts:
+      - infinity
+    success-rate:
+      bow: 1
