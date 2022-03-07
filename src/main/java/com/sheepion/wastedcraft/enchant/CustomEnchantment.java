@@ -42,6 +42,11 @@ public abstract class CustomEnchantment extends Enchantment {
         return displayName;
     }
 
+    /**
+     * check if the enchantment is applied on the item
+     * @param item the item to check
+     * @return true if the enchantment is already applied on the item
+     */
     public boolean isEnchanted(ItemStack item) {
         return item.containsEnchantment(Enchantment.getByKey(getKey()));
     }

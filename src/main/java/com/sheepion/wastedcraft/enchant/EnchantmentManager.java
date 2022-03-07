@@ -1,16 +1,13 @@
 package com.sheepion.wastedcraft.enchant;
 
 import com.sheepion.wastedcraft.WastedCraft;
-import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 
 import java.io.File;
@@ -80,7 +77,7 @@ public class EnchantmentManager implements Listener {
                 if (lore == null) {
                     lore = new ArrayList<>();
                 }
-                lore.add(registeredEnchantment.displayName(-1));
+                lore.add(0,registeredEnchantment.displayName(-1));
                 event.getItem().lore(lore);
             }
         }

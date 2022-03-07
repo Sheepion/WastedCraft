@@ -55,7 +55,11 @@ public class TrackingArrowTask implements Runnable {
             }
             Location currentLocation = projectile.getLocation();
             Vector v = new Vector(targetLocation.getX() - currentLocation.getX(), targetLocation.getY() - currentLocation.getY(), targetLocation.getZ() - currentLocation.getZ());
-            projectile.setVelocity(projectile.getVelocity().add(v.normalize().multiply(0.3f)).normalize().multiply(1.2f));
+            Vector newV=projectile.getVelocity().add(v.normalize().multiply(0.3f)).normalize().multiply(1.2f);
+            if(Math.random()<0.1){
+                newV.add(new Vector(Math.random()-0.5,Math.random()-0.5,Math.random()-0.5).normalize().multiply(Math.random()*0.6));
+            }
+            projectile.setVelocity(newV);
         }
     }
 }

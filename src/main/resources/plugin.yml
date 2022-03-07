@@ -5,6 +5,7 @@ api-version: 1.18
 prefix: WastedCraft
 authors: [ Sheepion ]
 description: brings new feature to survival
+depend: [ CustomPotionAPI ]
 commands:
   wastedcraft:
     description: WastedCraft

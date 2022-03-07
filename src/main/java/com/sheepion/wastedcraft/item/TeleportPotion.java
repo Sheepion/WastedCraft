@@ -76,36 +76,36 @@ public class TeleportPotion implements Listener {
     }
 
     //teleport player to location after drinking teleport potion
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
-        ItemStack item = event.getItem();
-        ItemMeta itemMeta = item.getItemMeta();
-        if (itemMeta == null) return;
-        PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
-        String world = pdc.get(TP_WORLD, PersistentDataType.STRING);
-        if (world == null || world.equals("NULL__")) return;
-        double x = pdc.get(TP_X, PersistentDataType.DOUBLE);
-        double y = pdc.get(TP_Y, PersistentDataType.DOUBLE);
-        double z = pdc.get(TP_Z, PersistentDataType.DOUBLE);
-        float yaw = pdc.get(TP_YAW, PersistentDataType.FLOAT);
-        float pitch = pdc.get(TP_PITCH, PersistentDataType.FLOAT);
-        Location location = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
-        location.getChunk().load();
-        Player player = event.getPlayer();
-        player.spawnParticle(Particle.PORTAL, player.getLocation(), (int) ((Math.random() * 200)), 0.5, 0.5, 0.5);
-        //teleport vehicle first.
-        Entity vehicle = player.getVehicle();
-        if (vehicle != null) {
-            vehicle.eject();
-            vehicle.teleport(location);
-            //simply add player as vehicle's passenger will cause bug, player don't actually get into vehicle.
-        }
-        Chunk originChunk = player.getLocation().getChunk();
-        //teleport player.
-        player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-        player.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-        player.spawnParticle(Particle.PORTAL, location, (int) ((Math.random() * 200)), 0.5, 0.5, 0.5);
-        //keep the origin chunk loaded to teleport pets.
-        WastedCraft.plugin.getServer().getScheduler().runTaskLater(WastedCraft.plugin, () -> originChunk.load(), 20);
-    }
+    //@EventHandler(ignoreCancelled = true)
+    //public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
+    //    ItemStack item = event.getItem();
+    //    ItemMeta itemMeta = item.getItemMeta();
+    //    if (itemMeta == null) return;
+    //    PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+    //    String world = pdc.get(TP_WORLD, PersistentDataType.STRING);
+    //    if (world == null || world.equals("NULL__")) return;
+    //    double x = pdc.get(TP_X, PersistentDataType.DOUBLE);
+    //    double y = pdc.get(TP_Y, PersistentDataType.DOUBLE);
+    //    double z = pdc.get(TP_Z, PersistentDataType.DOUBLE);
+    //    float yaw = pdc.get(TP_YAW, PersistentDataType.FLOAT);
+    //    float pitch = pdc.get(TP_PITCH, PersistentDataType.FLOAT);
+    //    Location location = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+    //    location.getChunk().load();
+    //    Player player = event.getPlayer();
+    //    player.spawnParticle(Particle.PORTAL, player.getLocation(), (int) ((Math.random() * 200)), 0.5, 0.5, 0.5);
+    //    //teleport vehicle first.
+    //    Entity vehicle = player.getVehicle();
+    //    if (vehicle != null) {
+    //        vehicle.eject();
+    //        vehicle.teleport(location);
+    //        //simply add player as vehicle's passenger will cause bug, player don't actually get into vehicle.
+    //    }
+    //    Chunk originChunk = player.getLocation().getChunk();
+    //    //teleport player.
+    //    player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
+    //    player.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+    //    player.spawnParticle(Particle.PORTAL, location, (int) ((Math.random() * 200)), 0.5, 0.5, 0.5);
+    //    //keep the origin chunk loaded to teleport pets.
+    //    WastedCraft.plugin.getServer().getScheduler().runTaskLater(WastedCraft.plugin, () -> originChunk.load(), 20);
+    //}
 }
